@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Class Vanni - Learn English</title>
+    <link href="css/global.css" rel="stylesheet">
+    <link href="img/logo.png" rel="icon" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Header estilo Duolingo -->
+<header class="duolingo-header">
+    <div class="header-container">
+        <div class="header-left">
+            <a class="logo-link" href="inicio.html">
+                <img alt="Class Vanni" class="logo" src="img/logo.png">
+            </a>
+            <div class="app-name">
+                <a href="inicio.html">
+                    <h1>Class Vanni</h1>
+                    <span class="tagline">Learn English</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="progress-stats">
+                <div class="stat-item">
+                    <i class="fas fa-fire"></i>
+                    <span id="streak">0</span>
+                    <span class="stat-label">Day Streak</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-gem"></i>
+                    <span id="xp">0</span>
+                    <span class="stat-label">XP</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-heart"></i>
+                    <span id="hearts">5</span>
+                    <span class="stat-label">Hearts</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <nav class="header-nav">
+                <a class="nav-link active" href="inicio.html">Home</a>
+                <a class="nav-link" href="redes_sociales.html">Social</a>
+            </nav>
+            <div class="profile-section">
+                <div class="profile-avatar" onclick="duolingoApp.switchUser()"
+                     title="Cambiar Usuario">
+                    <img alt="Profile" src="img/logo.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="duolingo-main">
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="welcome-card">
+            <h2>¡Bienvenido!</h2>
+            <p>Comienza explorando este maravilloso mundo en el que aprenderás inglés.</p>
+            <div class="daily-goal">
+                <div class="goal-progress">
+                    <div class="goal-bar">
+                        <div class="goal-fill" id="goalFill"></div>
+                    </div>
+                    <span class="goal-text">Meta diaria: 20 XP</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Lessons Section -->
+    <section class="lessons-section">
+        <h3 class="section-title">Lecciones de Inglés</h3>
+        <div class="lessons-grid">
+            <!-- Lesson 1 -->
+            <div class="lesson-card" data-lesson="1">
+                <div class="lesson-icon">
+                    <img alt="Lesson 1" src="img/Iglu.webp">
+                </div>
+                <div class="lesson-info">
+                    <h4>Verbos Regulares</h4>
+                    <p>Past Simple</p>
+                    <div class="lesson-progress">
+                        <div class="progress-dots">
+                            <span class="dot completed"></span>
+                            <span class="dot completed"></span>
+                            <span class="dot completed"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="xp-reward">+10 XP</span>
+                    </div>
+                </div>
+                <div class="lesson-status">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+
+            <!-- Lesson 2 -->
+            <div class="lesson-card locked" data-lesson="2">
+                <div class="lesson-icon">
+                    <img alt="Lesson 2" src="img/Iglu.webp">
+                </div>
+                <div class="lesson-info">
+                    <h4>Verbos Irregulares</h4>
+                    <p>Past Simple</p>
+                    <div class="lesson-progress">
+                        <div class="progress-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="xp-reward">+10 XP</span>
+                    </div>
+                </div>
+                <div class="lesson-status">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+
+            <!-- Lesson 3 -->
+            <div class="lesson-card locked" data-lesson="3">
+                <div class="lesson-icon">
+                    <img alt="Lesson 3" src="img/Iglu.webp">
+                </div>
+                <div class="lesson-info">
+                    <h4>Presente Continuo</h4>
+                    <p>Present Continuous</p>
+                    <div class="lesson-progress">
+                        <div class="progress-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="xp-reward">+10 XP</span>
+                    </div>
+                </div>
+                <div class="lesson-status">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+
+            <!-- Lesson 4 -->
+            <div class="lesson-card locked" data-lesson="4">
+                <div class="lesson-icon">
+                    <img alt="Lesson 4" src="img/Iglu.webp">
+                </div>
+                <div class="lesson-info">
+                    <h4>Futuro Simple</h4>
+                    <p>Future Simple</p>
+                    <div class="lesson-progress">
+                        <div class="progress-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="xp-reward">+10 XP</span>
+                    </div>
+                </div>
+                <div class="lesson-status">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+
+            <!-- Lesson 5 -->
+            <div class="lesson-card locked" data-lesson="5">
+                <div class="lesson-icon">
+                    <img alt="Lesson 5" src="img/Iglu.webp">
+                </div>
+                <div class="lesson-info">
+                    <h4>Condicionales</h4>
+                    <p>Conditionals</p>
+                    <div class="lesson-progress">
+                        <div class="progress-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="xp-reward">+10 XP</span>
+                    </div>
+                </div>
+                <div class="lesson-status">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practice Section -->
+    <section class="practice-section">
+        <h3 class="section-title">Práctica</h3>
+        <div class="practice-cards">
+            <div class="practice-card">
+                <i class="fas fa-redo"></i>
+                <h4>Repasar</h4>
+                <p>Refuerza lo aprendido</p>
+            </div>
+            <div class="practice-card">
+                <i class="fas fa-trophy"></i>
+                <h4>Desafíos</h4>
+                <p>Pon a prueba tus conocimientos</p>
+            </div>
+            <div class="practice-card">
+                <i class="fas fa-book"></i>
+                <h4>Lecciones</h4>
+                <p>Biblioteca de conocimiento</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- WhatsApp Float -->
+<a class="whatsapp-float" href="https://wa.me/573223815313" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script src="js/levels_config.js"></script>
+<script src="js/exercise-engine.js"></script>
+<script src="js/niveles.js"></script>
+<script src="js/duolingo.js"></script>
+</body>
+</html>

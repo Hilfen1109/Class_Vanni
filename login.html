@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Class Vanni - Registro</title>
+    <link href="css/global.css" rel="stylesheet">
+    <link href="img/logo.png" rel="icon" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .login-button {
+            width: 100%;
+            background: #3B82F6;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .login-button:hover {
+            background: #2563EB;
+        }
+
+        .login-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background: #3B82F6;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .welcome-animation {
+            animation: welcomeSlide 0.8s ease-out;
+        }
+
+        @keyframes welcomeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .character {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 60px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="login-card welcome-animation">
+        <img alt="Class Vanni" class="login-logo" src="img/logo.png">
+        <h1 class="login-title">¡Bienvenido a Class Vanni!</h1>
+        <p class="login-subtitle">Aprende inglés de forma divertida y gamificada</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="userName">Nombre completo</label>
+                <input id="userName" name="userName" placeholder="Ingresa tu nombre" required type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="userEmail">Correo electrónico</label>
+                <input id="userEmail" name="userEmail" placeholder="tu@email.com" required type="email">
+            </div>
+
+            <button class="login-button" id="loginButton" type="submit">
+                <i class="fas fa-rocket"></i> Comenzar Aventura
+            </button>
+        </form>
+
+        <div id="messageContainer"></div>
+    </div>
+
+    <div class="character">🎓</div>
+</div>
+
+<script>
+    class LoginSystem {
+        constructor() {
+            this.form = document.getElementById('loginForm');
+            this.messageContainer = document.getElementById('messageContainer');
+            this.loginButton = document.getElementById('loginButton');
+
+            this.init();
+        }
+
+        init() {
+            // Verificar si ya está registrado
+            if (this.isUserRegistered()) {
+                this.redirectToHome();
+                return;
+            }
+
+            this.form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleLogin();
+            });
+        }
+
+        isUserRegistered() {
+            return localStorage.getItem('userRegistered') === 'true';
+        }
+
+        async handleLogin() {
+            const userName = document.getElementById('userName').value.trim();
+            const userEmail = document.getElementById('userEmail').value.trim();
+
+            if (!userName || !userEmail) {
+                this.showMessage('Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            if (!this.isValidEmail(userEmail)) {
+                this.showMessage('Por favor ingresa un correo electrónico válido', 'error');
+                return;
+            }
+
+            this.loginButton.disabled = true;
+            this.loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...';
+
+            try {
+                // Simular registro (en producción sería una llamada a API)
+                await this.registerUser(userName, userEmail);
+                this.showMessage('¡Registro exitoso! Bienvenido a Class Vanni', 'success');
+
+                setTimeout(() => {
+                    this.redirectToHome();
+                }, 2000);
+
+            } catch (error) {
+                this.showMessage('Error al registrarse. Inténtalo de nuevo.', 'error');
+                this.loginButton.disabled = false;
+                this.loginButton.innerHTML = '<i class="fas fa-rocket"></i> Comenzar Aventura';
+            }
+        }
+
+        async registerUser(name, email) {
+            // Crear usuario único
+            const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+            // Datos del usuario
+            const userData = {
+                id: userId,
+                name: name,
+                email: email,
+                xp: 0,
+                streak: 0,
+                hearts: 5,
+                level: 1,
+                registeredAt: new Date().toISOString(),
+                lastActivity: new Date().toISOString(),
+                completedLessons: [],
+                achievements: []
+            };
+
+            // Guardar en localStorage
+            localStorage.setItem('userRegistered', 'true');
+            localStorage.setItem('userId', userId);
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            // Sin ranking ni sincronización con base de datos
+
+            // Simular delay de red
+            await new Promise(resolve => setTimeout(resolve, 1500));
+        }
+
+        // Ranking eliminado
+
+        isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        showMessage(message, type) {
+            this.messageContainer.innerHTML = `
+                    <div class="${type === 'error' ? 'error-message' : 'success-message'}">
+                        ${message}
+                    </div>
+                `;
+        }
+
+        redirectToHome() {
+            window.location.href = 'inicio.html';
+        }
+    }
+
+    // Inicializar sistema de login
+    document.addEventListener('DOMContentLoaded', () => {
+        new LoginSystem();
+    });
+</script>
+</body>
+</html>

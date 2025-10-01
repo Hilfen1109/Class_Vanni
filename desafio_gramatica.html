@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Desafío de Gramática - Class Vanni</title>
+    <link href="css/global.css" rel="stylesheet">
+    <link href="img/logo.png" rel="icon" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <!-- Header estilo Duolingo -->
+    <header class="duolingo-header">
+        <div class="header-container">
+            <div class="header-left">
+                <a class="logo-link" href="inicio.html">
+                    <img alt="Class Vanni" class="logo" src="img/logo.png">
+                </a>
+                <div class="app-name">
+                    <h1>Class Vanni</h1>
+                    <span class="tagline">Learn English</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <div class="progress-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span id="streak">0</span>
+                        <span class="stat-label">Day Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-gem"></i>
+                        <span id="xp">0</span>
+                        <span class="stat-label">XP</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-heart"></i>
+                        <span id="hearts">5</span>
+                        <span class="stat-label">Hearts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <nav class="header-nav">
+                    <a class="nav-link" href="inicio.html">Home</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="lesson-container">
+        <!-- Challenge Section -->
+        <div class="lesson-card-main" id="challenge-section">
+            <h1 class="lesson-title">Desafío de Gramática</h1>
+            <p class="lesson-subtitle">Responde 20 preguntas de gramática</p>
+
+            <div class="challenge-info">
+                <div class="challenge-score">
+                    <i class="fas fa-book"></i>
+                    <span id="grammar-score">0</span>
+                    <span>correctas</span>
+                </div>
+                <div class="challenge-progress">
+                    <span id="question-counter">1 / 20</span>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="challenge-progress"></div>
+            </div>
+
+            <div id="question-container">
+                <h2 class="question-text" id="pregunta"></h2>
+            </div>
+
+            <div id="question-media"></div>
+            <div id="options-container"></div>
+
+            <div class="result-container" id="resultado"></div>
+        </div>
+    </main>
+
+    <!-- Challenge Results Modal -->
+    <div class="modal-overlay" id="results-modal">
+        <div class="modal-content challenge-results">
+            <div class="results-header">
+                <i class="fas fa-trophy results-icon"></i>
+                <h2>¡Desafío Completado!</h2>
+            </div>
+            <div class="results-stats">
+                <div class="result-item">
+                    <span class="result-label">Preguntas Correctas:</span>
+                    <span class="result-value" id="correct-answers">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Precisión:</span>
+                    <span class="result-value" id="accuracy">0%</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Preguntas Totales:</span>
+                    <span class="result-value" id="total-questions">20</span>
+                </div>
+            </div>
+            <div class="rewards">
+                <div class="reward-item">
+                    <i class="fas fa-gem"></i>
+                    <span>+40 XP</span>
+                </div>
+                <div class="reward-item">
+                    <i class="fas fa-heart"></i>
+                    <span>+4 Corazones</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="window.location.href='inicio.html'">
+                    <i class="fas fa-home"></i>
+                    Volver al Inicio
+                </button>
+                <button class="btn btn-secondary" onclick="restartChallenge()">
+                    <i class="fas fa-redo"></i>
+                    Intentar de Nuevo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/levels_config.js"></script>
+    <script src="js/exercise-engine.js"></script>
+    <script src="js/duolingo.js"></script>
+    <script>
+        // Challenge-specific variables
+        let challengeExercises = [];
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let exerciseEngine = null;
+
+        // Initialize challenge
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeChallenge();
+        });
+
+        function initializeChallenge() {
+            // Initialize exercise engine
+            exerciseEngine = new ExerciseEngine();
+            
+            // Generate grammar challenge exercises
+            generateGrammarChallengeExercises();
+            
+            if (challengeExercises.length > 0) {
+                loadNextQuestion();
+            } else {
+                console.error('No se pudieron generar ejercicios para el desafío');
+                window.location.href = 'inicio.html';
+            }
+        }
+
+        function generateGrammarChallengeExercises() {
+            // Get exercises from all levels
+            const allExercises = [];
+            
+            for (let i = 1; i <= 5; i++) {
+                const levelConfig = getLevelConfig(i);
+                if (levelConfig) {
+                    allExercises.push(...levelConfig.exercises);
+                }
+            }
+            
+            // Filter grammar exercises
+            const grammarExercises = allExercises.filter(ex => 
+                ex.type === 'multiple_choice' || 
+                ex.type === 'fill_blank' ||
+                ex.type === 'sentence_construction'
+            );
+            
+            // Shuffle and select 20 exercises
+            const shuffled = grammarExercises.sort(() => Math.random() - 0.5);
+            challengeExercises = shuffled.slice(0, 20);
+        }
+
+        function loadNextQuestion() {
+            if (currentQuestionIndex >= challengeExercises.length) {
+                endChallenge();
+                return;
+            }
+
+            const exercise = challengeExercises[currentQuestionIndex];
+            
+            // Render exercise
+            exerciseEngine.renderExercise(exercise);
+            
+            // Update progress
+            updateProgress();
+            
+            // Set up answer handling
+            exerciseEngine.onAnswer = handleAnswer;
+        }
+
+        function handleAnswer(isCorrect, exercise) {
+            if (isCorrect) {
+                correctAnswers++;
+            }
+            
+            currentQuestionIndex++;
+            
+            // Update grammar score
+            updateGrammarScore();
+            
+            if (currentQuestionIndex < challengeExercises.length) {
+                setTimeout(() => {
+                    loadNextQuestion();
+                }, 1000);
+            } else {
+                endChallenge();
+            }
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('challenge-progress');
+            const questionCounter = document.getElementById('question-counter');
+            
+            const progress = (currentQuestionIndex / challengeExercises.length) * 100;
+            progressFill.style.width = progress + '%';
+            questionCounter.textContent = `${currentQuestionIndex + 1} / ${challengeExercises.length}`;
+        }
+
+        function updateGrammarScore() {
+            document.getElementById('grammar-score').textContent = correctAnswers;
+        }
+
+        function endChallenge() {
+            // Calculate results
+            const accuracy = Math.round((correctAnswers / challengeExercises.length) * 100);
+            
+            // Update results modal
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('total-questions').textContent = challengeExercises.length;
+            
+            // Show results
+            document.getElementById('results-modal').style.display = 'flex';
+            
+                // Add rewards
+                if (window.duolingoApp) {
+                    window.duolingoApp.addXP(40);
+                    for(let i=0;i<4;i++){window.duolingoApp.gainHeart();}
+                }
+        }
+
+        function restartChallenge() {
+            // Reset variables
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            
+            // Hide results modal
+            document.getElementById('results-modal').style.display = 'none';
+            
+            // Restart challenge
+            initializeChallenge();
+        }
+    </script>
+</body>
+</html>

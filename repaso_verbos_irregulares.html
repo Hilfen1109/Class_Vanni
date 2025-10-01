@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Repaso: Verbos Irregulares - Class Vanni</title>
+    <link href="css/global.css" rel="stylesheet">
+    <link href="img/logo.png" rel="icon" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <!-- Header estilo Duolingo -->
+    <header class="duolingo-header">
+        <div class="header-container">
+            <div class="header-left">
+                <a class="logo-link" href="inicio.html">
+                    <img alt="Class Vanni" class="logo" src="img/logo.png">
+                </a>
+                <div class="app-name">
+                    <h1>Class Vanni</h1>
+                    <span class="tagline">Learn English</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <div class="progress-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span id="streak">0</span>
+                        <span class="stat-label">Day Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-gem"></i>
+                        <span id="xp">0</span>
+                        <span class="stat-label">XP</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-heart"></i>
+                        <span id="hearts">5</span>
+                        <span class="stat-label">Hearts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <nav class="header-nav">
+                    <a class="nav-link" href="inicio.html">Home</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="lesson-container">
+        <!-- Review Section -->
+        <div class="lesson-card-main" id="review-section">
+            <h1 class="lesson-title">Repaso: Verbos Irregulares</h1>
+            <p class="lesson-subtitle">Practica los verbos irregulares en Past Simple</p>
+
+            <div class="review-info">
+                <div class="review-topic">
+                    <i class="fas fa-book"></i>
+                    <span>Verbos Irregulares</span>
+                </div>
+                <div class="review-progress">
+                    <span id="question-counter">1 / 10</span>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="review-progress"></div>
+            </div>
+
+            <div id="question-container">
+                <h2 class="question-text" id="pregunta"></h2>
+            </div>
+
+            <div id="question-media"></div>
+            <div id="options-container"></div>
+
+            <div class="result-container" id="resultado"></div>
+        </div>
+    </main>
+
+    <!-- Review Results Modal -->
+    <div class="modal-overlay" id="results-modal">
+        <div class="modal-content challenge-results">
+            <div class="results-header">
+                <i class="fas fa-trophy results-icon"></i>
+                <h2>¡Repaso Completado!</h2>
+            </div>
+            <div class="results-stats">
+                <div class="result-item">
+                    <span class="result-label">Preguntas Correctas:</span>
+                    <span class="result-value" id="correct-answers">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Precisión:</span>
+                    <span class="result-value" id="accuracy">0%</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Preguntas Totales:</span>
+                    <span class="result-value" id="total-questions">10</span>
+                </div>
+            </div>
+            <div class="rewards">
+                <div class="reward-item">
+                    <i class="fas fa-gem"></i>
+                    <span>+15 XP</span>
+                </div>
+                <div class="reward-item">
+                    <i class="fas fa-heart"></i>
+                    <span>+1 Corazón</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="window.location.href='inicio.html'">
+                    <i class="fas fa-home"></i>
+                    Volver al Inicio
+                </button>
+                <button class="btn btn-secondary" onclick="restartReview()">
+                    <i class="fas fa-redo"></i>
+                    Repetir Repaso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/levels_config.js"></script>
+    <script src="js/exercise-engine.js"></script>
+    <script src="js/duolingo.js"></script>
+    <script>
+        // Review-specific variables
+        let reviewExercises = [];
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let exerciseEngine = null;
+
+        // Initialize review
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeReview();
+        });
+
+        function initializeReview() {
+            // Initialize exercise engine
+            exerciseEngine = new ExerciseEngine();
+            
+            // Generate irregular verbs review exercises
+            generateIrregularVerbsReviewExercises();
+            
+            if (reviewExercises.length > 0) {
+                loadNextQuestion();
+            } else {
+                console.error('No se pudieron generar ejercicios para el repaso');
+                window.location.href = 'inicio.html';
+            }
+        }
+
+        function generateIrregularVerbsReviewExercises() {
+            // Use all level 2 exercises (no over-filtering)
+            const level2Config = getLevelConfig(2);
+            if (level2Config) {
+                const shuffled = [...level2Config.exercises].sort(() => Math.random() - 0.5);
+                reviewExercises = shuffled.slice(0, 10);
+            }
+        }
+
+        function loadNextQuestion() {
+            if (currentQuestionIndex >= reviewExercises.length) {
+                endReview();
+                return;
+            }
+
+            const exercise = reviewExercises[currentQuestionIndex];
+            
+            // Render exercise
+            exerciseEngine.renderExercise(exercise);
+            
+            // Update progress
+            updateProgress();
+            
+            // Set up answer handling
+            exerciseEngine.onAnswer = handleAnswer;
+        }
+
+        function handleAnswer(isCorrect, exercise) {
+            if (isCorrect) {
+                correctAnswers++;
+            }
+            
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < reviewExercises.length) {
+                setTimeout(() => {
+                    loadNextQuestion();
+                }, 1000);
+            } else {
+                endReview();
+            }
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('review-progress');
+            const questionCounter = document.getElementById('question-counter');
+            
+            const progress = (currentQuestionIndex / reviewExercises.length) * 100;
+            progressFill.style.width = progress + '%';
+            questionCounter.textContent = `${currentQuestionIndex + 1} / ${reviewExercises.length}`;
+        }
+
+        function endReview() {
+            // Calculate results
+            const accuracy = Math.round((correctAnswers / reviewExercises.length) * 100);
+            
+            // Update results modal
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('total-questions').textContent = reviewExercises.length;
+            
+            // Show results
+            document.getElementById('results-modal').style.display = 'flex';
+            
+                // Add rewards
+                if (window.duolingoApp) {
+                    window.duolingoApp.addXP(15);
+                    window.duolingoApp.gainHeart();
+                }
+        }
+
+        function restartReview() {
+            // Reset variables
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            
+            // Hide results modal
+            document.getElementById('results-modal').style.display = 'none';
+            
+            // Restart review
+            initializeReview();
+        }
+    </script>
+</body>
+</html>

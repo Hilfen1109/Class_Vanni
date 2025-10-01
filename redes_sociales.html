@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Social Media - Class Vanni</title>
+    <link href="css/global.css" rel="stylesheet">
+    <link href="img/logo.png" rel="icon" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Header estilo Duolingo -->
+<header class="duolingo-header">
+    <div class="header-container">
+        <div class="header-left">
+            <a class="logo-link" href="inicio.html">
+                <img alt="Class Vanni" class="logo" src="img/logo.png">
+            </a>
+            <div class="app-name">
+                <h1><a href="inicio.html">Class Vanni</a></h1>
+                <span class="tagline">Learn English</span>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="progress-stats">
+                <div class="stat-item">
+                    <i class="fas fa-fire"></i>
+                    <span id="streak">0</span>
+                    <span class="stat-label">Day Streak</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-gem"></i>
+                    <span id="xp">0</span>
+                    <span class="stat-label">XP</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-heart"></i>
+                    <span id="hearts">5</span>
+                    <span class="stat-label">Hearts</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <nav class="header-nav">
+                <a class="nav-link" href="inicio.html">Home</a>
+                <a class="nav-link active" href="redes_sociales.html">Social</a>
+            </nav>
+            <div class="profile-section">
+                <div class="profile-avatar" onclick="duolingoApp.switchUser()"
+                     title="Cambiar Usuario">
+                    <img alt="Profile" src="img/logo.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="social-container">
+    <div class="social-card">
+        <img alt="Foto de perfil" class="profile-img" src="img/logo.png">
+        <h2>Class Vanni</h2>
+        <p>📞 322 381 5313</p>
+        <a class="instagram-link" href="https://www.instagram.com/class_vanni1005/" target="_blank">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+    </div>
+</main>
+
+<!-- Icono de WhatsApp flotante -->
+<a class="whatsapp-float" href="https://wa.me/573223815313" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script src="js/duolingo.js"></script>
+</body>
+</html>
